@@ -20,6 +20,11 @@ extension Droplet {
 
         get("description") { req in return req.description }
         
+        let remindersController = RemindersController()
+        remindersController.addRoutes(to: self)
+        let userController = UserController()
+        userController.addRoutes(to: self)
+        
         try resource("posts", PostController.self)
     }
 }
