@@ -22,8 +22,12 @@ extension Droplet {
         
         let remindersController = RemindersController()
         remindersController.addRoutes(to: self)
+        
         let userController = UserController()
         userController.addRoutes(to: self)
+        
+        let categoriesController = CategoriesController()
+        categoriesController.addRoutes(to: self)
         
         try resource("posts", PostController.self)
     }

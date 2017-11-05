@@ -68,4 +68,8 @@ extension Reminder {
     var user: Parent<Reminder, User> {
         return parent(id: userId)
     }
+    
+    var categories: Siblings<Reminder, Category, Pivot<Reminder, Category>> {
+        return siblings()
+    }
 }
