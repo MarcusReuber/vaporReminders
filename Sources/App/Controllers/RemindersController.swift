@@ -18,23 +18,42 @@ struct RemindersController {
         reminderGroup.get(Reminder.parameter, "categories", handler: getReminderCategories)
     }
     
+//    func createReminder(_ req: Request) throws -> ResponseRepresentable {
+//        guard let json = req.json else {
+//            throw Abort.badRequest
+//        }
+//
+//        let reminder = try Reminder(json: json)
+//        try reminder.save()
+//
+//        if let categories = json["categories"]?.array {
+//            for categoryJSON in  categories {
+//                if let category = try Category.find(categoryJSON[Category.Properties.id]) {
+//                    try reminder.categories.add(category)
+//                }
+//            }
+//        }
+//
+//        return reminder
+//    }
+    
     func createReminder(_ req: Request) throws -> ResponseRepresentable {
         guard let json = req.json else {
             throw Abort.badRequest
         }
-        
         let reminder = try Reminder(json: json)
         try reminder.save()
         
         if let categories = json["categories"]?.array {
-            for categoryJSON in  categories {
-                if let category = try Category.find(categoryJSON["id"]) {
-                    try reminder.categories.add(category)
+            for categoryJSON in categories {
+                guard let categoryName = categoryJSON.string else {
+                    throw Abort.badRequest
                 }
+                try Category.addCategory(name: categoryName, to: reminder)
             }
         }
         
-        return "New Reminder Created"
+        return reminder
     }
     
     func allReminders(_ req: Request) throws -> ResponseRepresentable {
